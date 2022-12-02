@@ -2,24 +2,184 @@
 <html lang="ja">
     <head>
         <meta charset="utf-8">
-        <title>PHP test</title>
+        <title>aaaaaaaaaaaaa</title>
 </head>
 <body>
-    <h1>dodev test form</h1>
+    <h1>#include <stdio.h>
+#include<math.h>
 
-    <form action="dodevphp3.php" method="POST">
-        名前<br>
-        <input type="text" name="fullname"><bR>
+#define ID_NUM 10
+#define SUB_NUM 3
 
-        メールアドレス<br>
-        <input type="email" name="email">
-        <br>
+int SUB_AVE(int);
+int VARP(int);
+int RANK(int);
+int score_VIEW(int);
+int sore_bubble(int);
 
-        問い合わせ内容<br>
-        <textarea name="message" rows="8"></textarea><br>
+int ID_sum[ID_NUM][2];
+double sub_sum[SUB_NUM];
+double sub_sum_average=0;
+double sub_average[SUB_NUM];
+double varp[SUB_NUM];
+int NumRank;
 
-        <input type="submit" value="送信">
-</form>
-        <iframe src="https://aigakai0812.github.io/SUBARU講習会資料1_基礎編_第2.0版.pdf" width="100%" height="100%"></iframe>
+int main()
+{
+    
+    /**** (1) 変数宣言 ****/
+    int score[ID_NUM][SUB_NUM]={{80,94,84},{70,71,60},{65,83,73},{75,80,65},{78,88,83},{92,100,98},{82,88,93},{79,85,80},{88,95,90},{66,70,72}};
+    
+    int i;
+    int ID;
+    
+    /**** (2) 処理内容 ****/
+    /* 得点の表示 */
+    printf("what ID?");
+    scanf("%d",&ID);
+
+    SUB_AVE(ID);
+    VARP(ID);
+
+    printf("\nID\tSUB1\tSUB2\tSUB3\tSUM\n");
+    printf("%d\t%d\t%d\t%d\t%d\n",ID,score[ID][0],score[ID][1],score[ID][2],ID_sum[ID]);
+
+    score_VIEW(ID);
+    sore_bubble(ID);
+
+    printf("\t\t%dnum",NumRank);
+
+    return 0;
+    
+}
+
+int SUB_AVE(int ID){
+    double score[ID_NUM][SUB_NUM]={{80,94,84},{70,71,60},{65,83,73},{75,80,65},{78,88,83},{92,100,98},{82,88,93},{79,85,80},{88,95,90},{66,70,72}};
+    int ID_comfig=0;
+    int sub_comfig=0;
+
+    for(sub_comfig = 0; sub_comfig < SUB_NUM; sub_comfig++){
+        sub_sum[sub_comfig]=0;  sub_average[sub_comfig]=0;
+    }
+    for(ID_comfig = 0; ID_comfig < ID_NUM; ID_comfig++){
+        ID_sum[ID_comfig][0]=0;
+    }
+        
+
+    for(ID_comfig = 0; ID_comfig < ID_NUM; ID_comfig++){
+        for(sub_comfig = 0; sub_comfig < SUB_NUM; sub_comfig++){
+            sub_sum[sub_comfig] = (sub_sum[sub_comfig] + score[ID_comfig][sub_comfig]);
+            ID_sum[ID_comfig][0] = (ID_sum[ID_comfig][0] + score[ID_comfig][sub_comfig]);
+        }
+    }
+
+    for(sub_comfig = 0; sub_comfig < SUB_NUM; sub_comfig++){
+        sub_average[sub_comfig] = sub_sum[sub_comfig] / ID_NUM;
+        sub_sum_average = (sub_sum_average + sub_average[sub_comfig]);
+    }
+
+
+    return 0;
+}
+
+int VARP(int ID){
+    double score[ID_NUM][SUB_NUM]={{80,94,84},{70,71,60},{65,83,73},{75,80,65},{78,88,83},{92,100,98},{82,88,93},{79,85,80},{88,95,90},{66,70,72}};
+    double sigma = 0;
+    double sum = 0;
+    int ID_comfig=0;
+    int sub_comfig=0;
+
+    for(sub_comfig = 0; sub_comfig < SUB_NUM; sub_comfig++){
+        for(ID_comfig = 0; ID_comfig < ID_NUM; ID_comfig++){
+            sum = sum + pow((score[ID_comfig][sub_comfig]-sub_average[sub_comfig]),2);
+        }
+        sigma = sqrt(sum/ID_NUM);
+        varp[sub_comfig]=(((10*(score[ID][sub_comfig]-sub_average[sub_comfig]))/sigma)+50);
+    }
+
+    return 0;
+}
+
+int score_VIEW(int ID){
+    printf("AVE\t%.2f\t%.2f\t%.2f\t%.2f\n",sub_average[0],sub_average[1],sub_average[2],sub_sum_average);
+    printf("VARP\t%.2f\t%.2f\t%.2f\n",varp[0],varp[1],varp[2]);
+    if(300 >= ID_sum[ID][0] && ID_sum[ID][0] >= 270){
+        printf("\tRANK\tA");
+    }else if(269 >= ID_sum[ID][0] && ID_sum[ID][0] >= 240){
+        printf("\tRANK\tB");
+    }else if(239 >= ID_sum[ID][0] && ID_sum[ID][0] >= 210){
+        printf("\tRANK\tC");
+    }else if(209 >= ID_sum[ID][0] && ID_sum[ID][0] >= 0){
+        printf("\tRANK\tD");
+    }else{
+        printf("\tInput Error");
+    }
+}
+
+int sore_bubble(int ID){
+    int ID_comfig=0;
+    int sub_comfig=0;
+
+    int i, j, temp, temp2;
+    int checker_count=1,sort_count=0;
+    int a;
+    int check_count=0;
+    int rank;
+
+
+    for(ID_comfig = 0; ID_comfig < ID_NUM; ID_comfig++){
+        ID_sum[ID_comfig][1] = ID_comfig; 
+    }
+
+    for (i = 0; i < ID_NUM-1; i++) {
+        
+        for (j = 0; j < ID_NUM-i-1; j++) {
+
+            //printf("[%d][%d]\t",checker_count,sort_count);
+            a = 0;
+            for (a=-1;a<ID_NUM-1;a++){
+                if(a+1==j){
+                    //printf("*%d >",sub_sum[a+1][0]);
+                }else{
+                    //printf("%d ",sub_sum[a+1][0]);
+                }
+                
+            }
+            //printf("\n");
+            if (ID_sum[j][0] > ID_sum[j+1][0]) {
+                temp = ID_sum[j][0];
+                temp2= ID_sum[j][1];
+                ID_sum[j][0] = ID_sum[j+1][0];
+                ID_sum[j][1] = ID_sum[j+1][1];
+                ID_sum[j+1][0] = temp;
+                ID_sum[j+1][1] = temp2;
+                sort_count += 1;
+            }
+            checker_count += 1;
+        }
+        
+    }
+    /*
+    printf("\n\n");
+    for(check_count=0; check_count<ID_NUM; check_count++){
+        //printf("%d::",check_count);
+        printf("%d::",ID_sum[check_count][0]);
+    }
+    printf("\n");
+    for(check_count=0; check_count<ID_NUM; check_count++){
+        //printf("%d::",check_count);
+        printf("%d::",ID_sum[check_count][1]);
+    }
+    */
+
+    for(rank=0; rank < ID_NUM; rank++){
+        if(ID_sum[rank][1] == ID){
+            NumRank = (10 - rank);
+        }
+    }
+    
+    return 0;
+}
+</h1>
 </body>
 </html>
